@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     %% Define User and State
     User([User Query]) -->|Initializes| State[(AgentState\n- messages\n- plan\n- research_data\n- analysis\n- final_output)]
@@ -40,3 +41,4 @@ graph TD
     class Planner,SearchAgent,Analyst,Writer agent;
     class GroqLLM,TavilyTool tool;
     class State state;
+```
