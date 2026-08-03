@@ -1,13 +1,13 @@
 ```mermaid
 graph TD
-    %% Define User and State
     User([<b>User Query</b>]):::userClass -->|Initializes| State[(<b>AgentState</b><br/>- messages<br/>- plan<br/>- research_data<br/>- analysis<br/>- final_output)]:::stateClass
 
-    %% Tools (Placed outside for clear routing)
-    GroqLLM[["🤖 ChatGroq API<br/>(llama-3.1-8b-instant)"]]:::llmClass
+    %% Tool Definitions (Kept outside to allow side placement)
     TavilyTool[["🔍 TavilySearch API"]]:::toolClass
+    GroqLLM[["🤖 ChatGroq API<br/>(llama-3.1-8b-instant)"]]:::llmClass
 
-    %% LangGraph Workflow
+    State -->|Passes Context| Planner
+
     subgraph LangGraph ["LangGraph Sequential Workflow"]
         direction TB
         
@@ -21,17 +21,15 @@ graph TD
         Analyst -->|Updates: analysis| Writer
     end
 
-    %% Agent State Flow
-    State -->|Passes Context| Planner
+    %% Lateral Tool Connections (Forces Left/Right layout)
+    TavilyTool -.->|API Call| SearchAgent
+    
+    Planner -.->|LLM Prompt| GroqLLM
+    Analyst -.->|LLM Prompt| GroqLLM
+    Writer -.->|LLM Prompt| GroqLLM
+
+    %% Output Flow
     Writer -->|Completes| END([END]):::endClass
-
-    %% FIXED Tool Bindings (Explicit directional mapping)
-    Planner -.->|Uses| GroqLLM
-    SearchAgent -.->|Uses| TavilyTool
-    Analyst -.->|Uses| GroqLLM
-    Writer -.->|Uses| GroqLLM
-
-    %% Final Output
     END --> FinalReport[/<b>Final Report Output</b>/]:::outputClass
 
     %% Modern Color Styling
