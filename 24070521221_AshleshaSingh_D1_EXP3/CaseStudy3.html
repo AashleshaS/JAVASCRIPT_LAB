@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JS Practical - Multi-Subject Grading & Scholarship System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 480px;
+      margin: 30px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+    }
+    /* Highlight invalid input fields */
+    input.invalid-input {
+      border: 2px solid #dc3545;
+      background-color: #fff8f8;
+    }
+    /* Style inline error text under inputs */
+    .field-error {
+      color: #dc3545;
+      font-size: 13px;
+      margin-top: 4px;
+      display: block;
+      min-height: 18px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 4px;
+      display: none;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Grading & Scholarship System</h2>
+
+  <form id="gradingForm" onsubmit="calculateAverageGrade(event)" novalidate>
+    <div class="form-group">
+      <label for="studentName">Student Name:</label>
+      <input type="text" id="studentName" placeholder="e.g. John Doe">
+      <span class="field-error" id="nameError"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="math">Math Marks (0 - 100):</label>
+      <input type="number" id="math" placeholder="e.g. 85">
+      <span class="field-error" id="mathError"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="science">Science Marks (0 - 100):</label>
+      <input type="number" id="science" placeholder="e.g. 90">
+      <span class="field-error" id="scienceError"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="english">English Marks (0 - 100):</label>
+      <input type="number" id="english" placeholder="e.g. 78">
+      <span class="field-error" id="englishError"></span>
+    </div>
+
+    <button type="submit">Calculate Grade & Scholarship</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateAverageGrade(event) {
+      event.preventDefault();
+
+      let isValid = true;
+
+      // Reset previous result box
+      const resultDiv = document.getElementById("result");
+      resultDiv.style.display = "none";
+
+      // Validation Helper Function
+      function validateField(inputId, errorId, fieldName, isSubject = true) {
+        const inputElement = document.getElementById(inputId);
+        const errorElement = document.getElementById(errorId);
+        const value = inputElement.value.trim();
+
+        inputElement.classList.remove("invalid-input");
+        errorElement.textContent = "";
+
+        if (value === "") {
+          inputElement.classList.add("invalid-input");
+          errorElement.textContent = `Please enter ${fieldName}.`;
+          isValid = false;
+          return;
+        }
+
+        if (isSubject) {
+          const score = parseFloat(value);
+          if (isNaN(score) || score < 0 || score > 100) {
+            inputElement.classList.add("invalid-input");
+            errorElement.textContent = `Enter valid ${fieldName} (0–100).`;
+            isValid = false;
+          }
+        }
+      }
+
+      // 1. Validate inputs
+      validateField("studentName", "nameError", "student's name", false);
+      validateField("math", "mathError", "Math marks", true);
+      validateField("science", "scienceError", "Science marks", true);
+      validateField("english", "englishError", "English marks", true);
+
+      if (!isValid) return;
+
+      // 2. Calculations
+      const math = parseFloat(document.getElementById("math").value);
+      const science = parseFloat(document.getElementById("science").value);
+      const english = parseFloat(document.getElementById("english").value);
+      const name = document.getElementById("studentName").value.trim();
+
+      const totalMarks = math + science + english;
+      const average = (totalMarks / 3).toFixed(2);
+
+      let grade = "";
+      let status = "";
+      let scholarship = "";
+
+      // Standard Grade Determination
+      if (average >= 90) {
+        grade = "A+"; status = "Passed with Distinction";
+      } else if (average >= 80) {
+        grade = "A"; status = "Passed";
+      } else if (average >= 70) {
+        grade = "B"; status = "Passed";
+      } else if (average >= 60) {
+        grade = "C"; status = "Passed";
+      } else if (average >= 50) {
+        grade = "D"; status = "Passed";
+      } else {
+        grade = "F"; status = "Failed";
+      }
+
+      // Task 1: Case Study Scholarship Eligibility Logic
+      if (average >= 95) {
+        scholarship = "Platinum Scholarship";
+      } else if (average >= 85) {
+        scholarship = "Gold Scholarship";
+      } else if (average >= 70) {
+        scholarship = "Silver Scholarship";
+      } else if (average >= 50) {
+        scholarship = "Bronze Scholarship";
+      } else {
+        scholarship = "Not Eligible";
+      }
+
+      // Display result summary including Scholarship Category
+      resultDiv.style.display = "block";
+      resultDiv.innerHTML = `
+        <strong>Result Summary:</strong><br>
+        Name: ${name}<br>
+        Math: ${math} | Science: ${science} | English: ${english}<br>
+        Total: ${totalMarks} / 300<br>
+        Average: <strong>${average}%</strong><br>
+        Overall Grade: <strong>${grade}</strong> (${status})<br>
+        Scholarship Category: <strong>${scholarship}</strong>
+      `;
+    }
+  </script>
+
+</body>
+</html>
