@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Billing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 500px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        p {
+            margin: 6px 0;
+            font-size: 15px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ccc;
+            margin: 15px 0;
+        }
+        .final-amount {
+            color: #2e7d32;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Online Shopping Billing Calculator</h2>
+    <div id="receipt"></div>
+</div>
+
+<script>
+    // 1. Collecting Inputs as specified in the Case Study
+    var customerName = prompt("Enter Customer Name:");
+    var mobileNumber = prompt("Enter Mobile Number:");
+    var invoiceNumber = prompt("Enter Invoice Number:");
+    var productName = prompt("Enter Product Name:");
+
+    var quantity = Number(prompt("Enter Quantity (in Kg):"));
+    var ratePerKg = Number(prompt("Enter Rate per Kg (₹):"));
+    var discountPercent = Number(prompt("Enter Discount (%):"));
+    var gstPercent = Number(prompt("Enter GST (%):"));
+    var packingCharges = Number(prompt("Enter Packing Charges (₹):"));
+
+    var paymentMode = prompt("Enter Payment Mode (Cash/Card/UPI):");
+    var isMember = prompt("Membership Status (Yes/No):");
+
+    // 2. Calculations
+    let baseAmount = quantity * ratePerKg;
+    let discountAmount = (baseAmount * discountPercent) / 100;
+    let amountAfterDiscount = baseAmount - discountAmount;
+
+    let gstAmount = (amountAfterDiscount * gstPercent) / 100;
+    let finalBill = amountAfterDiscount + gstAmount + packingCharges;
+
+    // 3. Storing in an Object
+    const bill = {
+        customerName,
+        mobileNumber,
+        invoiceNumber,
+        productName,
+        quantity,
+        ratePerKg,
+        discountPercent,
+        discountAmount,
+        gstPercent,
+        gstAmount,
+        packingCharges,
+        paymentMode,
+        isMember,
+        finalBill
+    };
+
+    // 4. Destructuring Object for Output
+    const {
+        customerName: cName,
+        mobileNumber: mNo,
+        invoiceNumber: invNo,
+        productName: pName,
+        quantity: qty,
+        ratePerKg: rate,
+        discountAmount: disc,
+        gstAmount: gst,
+        packingCharges: packing,
+        paymentMode: mode,
+        isMember: member,
+        finalBill: total
+    } = bill;
+
+    // 5. Displaying Results on Page
+    document.getElementById("receipt").innerHTML = `
+        <h3>Invoice Receipt</h3>
+        <p><strong>Invoice No:</strong> ${invNo}</p>
+        <p><strong>Customer Name:</strong> ${cName}</p>
+        <p><strong>Mobile No:</strong> ${mNo}</p>
+        <p><strong>Membership Status:</strong> ${member}</p>
+        <hr>
+        <p><strong>Product Name:</strong> ${pName}</p>
+        <p><strong>Quantity:</strong> ${qty} Kg</p>
+        <p><strong>Rate per Kg:</strong> ₹${rate.toFixed(2)}</p>
+        <p><strong>Base Amount:</strong> ₹${baseAmount.toFixed(2)}</p>
+        <p><strong>Discount (${discountPercent}%):</strong> -₹${disc.toFixed(2)}</p>
+        <p><strong>GST (${gstPercent}%):</strong> +₹${gst.toFixed(2)}</p>
+        <p><strong>Packing Charges:</strong> +₹${packing.toFixed(2)}</p>
+        <hr>
+        <p><strong>Payment Mode:</strong> ${mode}</p>
+        <p class="final-amount">Final Bill Amount: ₹${total.toFixed(2)}</p>
+    `;
+</script>
+
+</body>
+</html>
