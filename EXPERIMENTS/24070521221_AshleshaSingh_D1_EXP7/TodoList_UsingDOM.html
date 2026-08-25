@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #d1d8e0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .todo-container {
+            background-color: #f1f2f6;
+            width: 550px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #a4b0be;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        #taskInput:focus {
+            border-color: #2ed573;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .add-btn {
+            background-color: #2ed573;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .task-item {
+            background-color: #e4e7eb;
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #747d8c;
+        }
+
+        .task-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 1.05rem;
+            color: #2f3542;
+            word-break: break-word;
+        }
+
+        .edit-input {
+            flex: 1;
+            padding: 6px 10px;
+            font-size: 1rem;
+            border: 1px solid #ffa502;
+            border-radius: 4px;
+        }
+
+        .edit-btn {
+            background-color: #ffa502;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .delete-btn {
+            background-color: #ff4757;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .task-counter {
+            text-align: center;
+            font-weight: bold;
+            color: #2f3542;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h1>To-Do List</h1>
+        
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <button class="add-btn" id="addTaskBtn">Add</button>
+        </div>
+
+        <!-- The list is now empty by default -->
+        <ul class="task-list" id="taskList"></ul>
+
+        <div class="task-counter" id="taskCounter">Total Tasks: 0</div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const taskCounter = document.getElementById('taskCounter');
+
+        // Function to update the total task counter
+        function updateCounter() {
+            const totalTasks = taskList.children.length;
+            taskCounter.textContent = `Total Tasks: ${totalTasks}`;
+        }
+
+        // Function to add a new task item
+        function addTask() {
+            const taskValue = taskInput.value.trim();
+            if (taskValue === '') {
+                alert('Please enter a valid task!');
+                return;
+            }
+
+            // Create list element
+            const li = document.createElement('li');
+            li.className = 'task-item';
+
+            // Create and append dynamic internal DOM structure
+            li.innerHTML = `
+                <input type="checkbox" class="task-checkbox">
+                <span class="task-text">${taskValue}</span>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            `;
+
+            taskList.appendChild(li);
+            taskInput.value = ''; // Reset input field
+            updateCounter();
+        }
+
+        // Event listener for the Add button
+        addTaskBtn.addEventListener('click', addTask);
+
+        // Allow pressing 'Enter' key to add a task
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Event Delegation for operations inside the list (Edit, Save, Delete, Toggle Checkbox)
+        taskList.addEventListener('click', function(e) {
+            const target = e.target;
+            const parentLI = target.parentElement; // DOM Traversal to parent element
+
+            // 1. DELETE FEATURE
+            if (target.classList.contains('delete-btn')) {
+                parentLI.remove();
+                updateCounter();
+            }
+
+            // 2. EDIT/SAVE FEATURE
+            else if (target.classList.contains('edit-btn')) {
+                const taskTextSpan = parentLI.querySelector('.task-text');
+                
+                if (target.textContent === 'Edit') {
+                    // Switch to edit mode: replace text span with an input text box
+                    const currentText = taskTextSpan.textContent;
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.className = 'edit-input';
+                    inputField.value = currentText;
+                    
+                    parentLI.replaceChild(inputField, taskTextSpan); // DOM update replacement
+                    target.textContent = 'Save';
+                    target.style.backgroundColor = '#2ed573'; // Change button color to green on save mode
+                } else {
+                    // Save mode processing
+                    const editInput = parentLI.querySelector('.edit-input');
+                    const updatedText = editInput.value.trim();
+                    
+                    if (updatedText === '') {
+                        alert('Task cannot be empty!');
+                        return;
+                    }
+
+                    const newSpan = document.createElement('span');
+                    newSpan.className = 'task-text';
+                    newSpan.textContent = updatedText;
+
+                    parentLI.replaceChild(newSpan, editInput); // DOM update replacement
+                    target.textContent = 'Edit';
+                    target.style.backgroundColor = '#ffa502'; // Restore button color to orange
+                }
+            }
+
+            // 3. TOGGLE CHECKBOX (COMPLETION) STATUS
+            else if (target.classList.contains('task-checkbox')) {
+                if (target.checked) {
+                    parentLI.classList.add('completed');
+                } else {
+                    parentLI.classList.remove('completed');
+                }
+            }
+        });
+
+        // Initial counter setup
+        updateCounter();
+    </script>
+</body>
+</html>
