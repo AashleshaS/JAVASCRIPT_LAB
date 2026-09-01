@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Membership Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: block;
+            min-height: 18px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Gym Membership Form</h2>
+        <form id="gymForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter full name">
+                <span id="nameError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter email address">
+                <span id="emailError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" placeholder="Enter 10-digit mobile number">
+                <span id="mobileError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="Enter age (16-90)">
+                <span id="ageError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="plan">Membership Plan</label>
+                <select id="plan">
+                    <option value="">Select a plan</option>
+                    <option value="monthly">Monthly Pass</option>
+                    <option value="quarterly">Quarterly Pass (3 Months)</option>
+                    <option value="annual">Annual Membership (1 Year)</option>
+                </select>
+                <span id="planError" class="error-message"></span>
+            </div>
+
+            <button type="submit">Register Now</button>
+        </form>
+    </div>
+
+    <script>
+        // 1. Access elements using document.getElementById
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const mobileInput = document.getElementById("mobile");
+        const ageInput = document.getElementById("age");
+        const planSelect = document.getElementById("plan");
+        const gymForm = document.getElementById("gymForm");
+
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const mobileError = document.getElementById("mobileError");
+        const ageError = document.getElementById("ageError");
+        const planError = document.getElementById("planError");
+
+        // Helper functions for validation logic
+        function validateName() {
+            // 2. Get input value
+            const value = nameInput.value.trim();
+            // 5. Validate condition & 4. Show message element
+            if (value.length < 3) {
+                nameError.textContent = "Name must be at least 3 characters";
+                return false;
+            }
+            nameError.textContent = "";
+            return true;
+        }
+
+        function validateEmail() {
+            const value = emailInput.value.trim();
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!value.match(emailPattern)) {
+                emailError.textContent = "Enter a valid email address";
+                return false;
+            }
+            emailError.textContent = "";
+            return true;
+        }
+
+        function validateMobile() {
+            const value = mobileInput.value.trim();
+            const mobilePattern = /^[0-9]{10}$/;
+            if (!value.match(mobilePattern)) {
+                mobileError.textContent = "Enter a valid 10-digit mobile number";
+                return false;
+            }
+            mobileError.textContent = "";
+            return true;
+        }
+
+        function validateAge() {
+            const value = parseInt(ageInput.value, 10);
+            if (isNaN(value) || value < 16 || value > 90) {
+                ageError.textContent = "Age must be between 16 and 90";
+                return false;
+            }
+            ageError.textContent = "";
+            return true;
+        }
+
+        function validatePlan() {
+            if (planSelect.value === "") {
+                planError.textContent = "Please select a membership plan";
+                return false;
+            }
+            planError.textContent = "";
+            return true;
+        }
+
+        // 3. Add event listeners for real-time validation ("input" & "change")
+        nameInput.addEventListener("input", validateName);
+        emailInput.addEventListener("input", validateEmail);
+        mobileInput.addEventListener("input", validateMobile);
+        ageInput.addEventListener("input", validateAge);
+        planSelect.addEventListener("change", validatePlan);
+
+        // 6. Stop form submission if validation fails
+        gymForm.addEventListener("submit", function(event) {
+            const isNameValid = validateName();
+            const isEmailValid = validateEmail();
+            const isMobileValid = validateMobile();
+            const isAgeValid = validateAge();
+            const isPlanValid = validatePlan();
+
+            if (!isNameValid || !isEmailValid || !isMobileValid || !isAgeValid || !isPlanValid) {
+                // 6. Stop form submission
+                event.preventDefault();
+            } else {
+                alert("Form submitted successfully!");
+            }
+        });
+    </script>
+
+</body>
+</html>
