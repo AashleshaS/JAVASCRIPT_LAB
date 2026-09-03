@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Job Application Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 8px;
+            color: #0056b3;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        .error {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .invalid input, .invalid select, .invalid textarea {
+            border-color: #d9534f;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #003d80;
+        }
+
+        .success-message {
+            display: none;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Online Job Application Form</h1>
+    
+    <div id="successMsg" class="success-message">
+        Application submitted successfully!
+    </div>
+
+    <form id="jobAppForm" novalidate>
+        
+        <fieldset>
+            <legend>Personal Information</legend>
+            
+            <div class="form-group" id="group-fullName">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" placeholder="John Doe">
+                <span class="error">Please enter your full name.</span>
+            </div>
+
+            <div class="form-group" id="group-dob">
+                <label for="dob">Date of Birth *</label>
+                <input type="date" id="dob">
+                <span class="error">Please select a valid date of birth.</span>
+            </div>
+
+            <div class="form-group" id="group-gender">
+                <label>Gender *</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gender" value="Male"> Male</label>
+                    <label><input type="radio" name="gender" value="Female"> Female</label>
+                    <label><input type="radio" name="gender" value="Other"> Other</label>
+                </div>
+                <span class="error">Please select your gender.</span>
+            </div>
+
+            <div class="form-group" id="group-email">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" placeholder="example@email.com">
+                <span class="error">Please enter a valid email address.</span>
+            </div>
+
+            <div class="form-group" id="group-mobile">
+                <label for="mobile">Mobile Number *</label>
+                <input type="text" id="mobile" placeholder="10-digit phone number">
+                <span class="error">Please enter a valid 10-digit mobile number.</span>
+            </div>
+
+            <div class="form-group" id="group-address">
+                <label for="address">Address *</label>
+                <textarea id="address" rows="2" placeholder="Street Address"></textarea>
+                <span class="error">Please enter your address.</span>
+            </div>
+
+            <div class="form-group" id="group-location">
+                <label for="location">City / State / PIN Code *</label>
+                <input type="text" id="location" placeholder="e.g., New York, NY, 10001">
+                <span class="error">Please enter City, State, and PIN Code.</span>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Educational Qualification</legend>
+
+            <div class="form-group" id="group-highestQual">
+                <label for="highestQual">Highest Qualification *</label>
+                <select id="highestQual">
+                    <option value="">Select Qualification</option>
+                    <option value="High School">High School</option>
+                    <option value="Associate Degree">Associate Degree</option>
+                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                    <option value="Master's Degree">Master's Degree</option>
+                    <option value="Doctorate">Doctorate</option>
+                </select>
+                <span class="error">Please select your highest qualification.</span>
+            </div>
+
+            <div class="form-group" id="group-institute">
+                <label for="institute">University / Institute *</label>
+                <input type="text" id="institute" placeholder="Name of University or College">
+                <span class="error">Please enter your University/Institute name.</span>
+            </div>
+
+            <div class="form-group" id="group-passingYear">
+                <label for="passingYear">Passing Year *</label>
+                <input type="number" id="passingYear" min="1950" max="2026" placeholder="YYYY">
+                <span class="error">Please enter a valid passing year (1950 - 2026).</span>
+            </div>
+
+            <div class="form-group" id="group-cgpa">
+                <label for="cgpa">Percentage / CGPA *</label>
+                <input type="text" id="cgpa" placeholder="e.g., 85% or 3.8">
+                <span class="error">Please enter your Percentage or CGPA.</span>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Professional Information</legend>
+
+            <div class="form-group" id="group-jobPosition">
+                <label for="jobPosition">Applying For / Job Position *</label>
+                <input type="text" id="jobPosition" placeholder="e.g., Frontend Developer">
+                <span class="error">Please state the position you are applying for.</span>
+            </div>
+
+            <div class="form-group" id="group-experience">
+                <label for="experience">Total Work Experience (Years) *</label>
+                <input type="number" id="experience" min="0" step="0.5" placeholder="e.g., 2.5">
+                <span class="error">Please enter your work experience (enter 0 if fresh graduate).</span>
+            </div>
+
+            <div class="form-group" id="group-organization">
+                <label for="organization">Current / Previous Organization *</label>
+                <input type="text" id="organization" placeholder="Company Name (or 'None')">
+                <span class="error">Please enter current or previous organization.</span>
+            </div>
+
+            <div class="form-group" id="group-designation">
+                <label for="designation">Current Designation *</label>
+                <input type="text" id="designation" placeholder="Job Title (or 'N/A')">
+                <span class="error">Please enter your current designation.</span>
+            </div>
+
+            <div class="form-group" id="group-salary">
+                <label for="salary">Expected Salary *</label>
+                <input type="text" id="salary" placeholder="e.g., $60,000 / year">
+                <span class="error">Please enter your expected salary.</span>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Technical Skills</legend>
+
+            <div class="form-group" id="group-progLanguages">
+                <label for="progLanguages">Programming Languages *</label>
+                <input type="text" id="progLanguages" placeholder="e.g., JavaScript, Python, C++">
+                <span class="error">Please list programming languages you know.</span>
+            </div>
+
+            <div class="form-group" id="group-techSkills">
+                <label for="techSkills">Technical Skills *</label>
+                <input type="text" id="techSkills" placeholder="e.g., React, Git, SQL, AWS">
+                <span class="error">Please list your technical skills.</span>
+            </div>
+
+            <div class="form-group" id="group-certifications">
+                <label for="certifications">Certifications</label>
+                <input type="text" id="certifications" placeholder="e.g., AWS Certified Developer (Optional)">
+            </div>
+        </fieldset>
+
+        <button type="submit">Submit Application</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('jobAppForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        let isValid = true;
+
+        // Validation helper function
+        function validateField(groupId, fieldId, condition) {
+            const group = document.getElementById(groupId);
+            const errorElem = group.querySelector('.error');
+
+            if (!condition) {
+                group.classList.add('invalid');
+                if (errorElem) errorElem.style.display = 'block';
+                isValid = false;
+            } else {
+                group.classList.remove('invalid');
+                if (errorElem) errorElem.style.display = 'none';
+            }
+        }
+
+        // 1. Personal Information Validation
+        const fullName = document.getElementById('fullName').value.trim();
+        validateField('group-fullName', 'fullName', fullName.length > 0);
+
+        const dob = document.getElementById('dob').value;
+        validateField('group-dob', 'dob', dob !== '');
+
+        const genderSelected = document.querySelector('input[name="gender"]:checked');
+        validateField('group-gender', 'gender', genderSelected !== null);
+
+        const email = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        validateField('group-email', 'email', emailRegex.test(email));
+
+        const mobile = document.getElementById('mobile').value.trim();
+        const mobileRegex = /^[0-9]{10}$/;
+        validateField('group-mobile', 'mobile', mobileRegex.test(mobile));
+
+        const address = document.getElementById('address').value.trim();
+        validateField('group-address', 'address', address.length > 0);
+
+        const location = document.getElementById('location').value.trim();
+        validateField('group-location', 'location', location.length > 0);
+
+        // 2. Educational Qualification Validation
+        const highestQual = document.getElementById('highestQual').value;
+        validateField('group-highestQual', 'highestQual', highestQual !== '');
+
+        const institute = document.getElementById('institute').value.trim();
+        validateField('group-institute', 'institute', institute.length > 0);
+
+        const passingYear = parseInt(document.getElementById('passingYear').value, 10);
+        validateField('group-passingYear', 'passingYear', passingYear >= 1950 && passingYear <= 2026);
+
+        const cgpa = document.getElementById('cgpa').value.trim();
+        validateField('group-cgpa', 'cgpa', cgpa.length > 0);
+
+        // 3. Professional Information Validation
+        const jobPosition = document.getElementById('jobPosition').value.trim();
+        validateField('group-jobPosition', 'jobPosition', jobPosition.length > 0);
+
+        const experience = document.getElementById('experience').value;
+        validateField('group-experience', 'experience', experience !== '' && parseFloat(experience) >= 0);
+
+        const organization = document.getElementById('organization').value.trim();
+        validateField('group-organization', 'organization', organization.length > 0);
+
+        const designation = document.getElementById('designation').value.trim();
+        validateField('group-designation', 'designation', designation.length > 0);
+
+        const salary = document.getElementById('salary').value.trim();
+        validateField('group-salary', 'salary', salary.length > 0);
+
+        // 4. Technical Skills Validation
+        const progLanguages = document.getElementById('progLanguages').value.trim();
+        validateField('group-progLanguages', 'progLanguages', progLanguages.length > 0);
+
+        const techSkills = document.getElementById('techSkills').value.trim();
+        validateField('group-techSkills', 'techSkills', techSkills.length > 0);
+
+        // Submit form if valid
+        if (isValid) {
+            successMsg.style.display = 'block';
+            form.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            successMsg.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
