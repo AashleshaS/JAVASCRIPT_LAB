@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Handling with JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+
+    .form-container {
+      border: 1px solid #000;
+      width: 450px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .mandatory-note {
+      color: red;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      width: 110px;
+      font-size: 14px;
+    }
+
+    .form-row input[type="text"],
+    .form-row input[type="email"],
+    .form-row input[type="url"],
+    .form-row input[type="password"],
+    .form-row select {
+      padding: 3px;
+      border: 1px solid #777;
+    }
+
+    .input-field {
+      width: 180px;
+    }
+
+    .asterisk {
+      color: red;
+      margin-left: 4px;
+    }
+
+    .date-selects select {
+      margin-right: 2px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    .checkbox-row label {
+      margin-left: 5px;
+      font-size: 14px;
+    }
+
+    .submit-btn {
+      padding: 4px 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Input highlighting on focus event */
+    input:focus, select:focus {
+      background-color: #f0f8ff;
+      outline: 1px solid #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <div class="mandatory-note">*Mandatory to fill</div>
+
+  <form id="signupForm" novalidate>
+    
+    <div class="form-row">
+      <label for="firstname">Firstname:</label>
+      <input type="text" id="firstname" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="lastname">Lastname:</label>
+      <input type="text" id="lastname" class="input-field">
+    </div>
+
+    <div class="form-row">
+      <label>Birthday:</label>
+      <div class="date-selects">
+        <select id="day">
+          <option value="">Day</option>
+        </select>
+        <select id="month">
+          <option value="">Month</option>
+          <option value="1">Jan</option>
+          <option value="2">Feb</option>
+          <option value="3">Mar</option>
+          <option value="4">Apr</option>
+          <option value="5">May</option>
+          <option value="6">Jun</option>
+          <option value="7">Jul</option>
+          <option value="8">Aug</option>
+          <option value="9">Sep</option>
+          <option value="10">Oct</option>
+          <option value="11">Nov</option>
+          <option value="12">Dec</option>
+        </select>
+        <select id="year">
+          <option value="">Year</option>
+        </select>
+      </div>
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="username">Username:</label>
+      <input type="text" id="username" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="website">Website:</label>
+      <input type="url" id="website" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="password">Password:</label>
+      <input type="password" id="password" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="form-row">
+      <label for="repassword">Re-password:</label>
+      <input type="password" id="repassword" class="input-field">
+      <span class="asterisk">*</span>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">I agree to the terms & conditions.</label>
+    </div>
+
+    <button type="submit" class="submit-btn">Sign up</button>
+  </form>
+</div>
+
+<script>
+  // Populate Days (1 to 31)
+  const daySelect = document.getElementById('day');
+  for (let i = 1; i <= 31; i++) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = i;
+    daySelect.appendChild(opt);
+  }
+
+  // Populate Years (1950 to 2026)
+  const yearSelect = document.getElementById('year');
+  for (let i = 2026; i >= 1950; i--) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = i;
+    yearSelect.appendChild(opt);
+  }
+
+  // Event Listener: Change event demonstration
+  document.getElementById('month').addEventListener('change', function() {
+    console.log('Month changed to: ' + this.value);
+  });
+
+  // Event Listener: Submit event and field validations
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const firstname = document.getElementById('firstname').value.trim();
+    const day = document.getElementById('day').value;
+    const month = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const website = document.getElementById('website').value.trim();
+    const password = document.getElementById('password').value;
+    const repassword = document.getElementById('repassword').value;
+    const terms = document.getElementById('terms').checked;
+
+    // Check empty fields
+    if (!firstname) {
+      alert('Firstname is required.');
+      return;
+    }
+
+    if (!day || !month || !year) {
+      alert('Please select a complete birthday.');
+      return;
+    }
+
+    if (!username) {
+      alert('Username is required.');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Website validation
+    const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/.*)?$/i;
+    if (!urlRegex.test(website)) {
+      alert('Please enter a valid website URL.');
+      return;
+    }
+
+    // Password validations
+    if (!password) {
+      alert('Password is required.');
+      return;
+    }
+
+    if (password !== repassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    // Terms & Conditions checkbox check
+    if (!terms) {
+      alert('You must agree to the terms & conditions.');
+      return;
+    }
+
+    alert('Form submitted successfully!');
+  });
+</script>
+
+</body>
+</html>
