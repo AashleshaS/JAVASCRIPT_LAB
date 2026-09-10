@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Light Theme Styles */
+        body.light {
+            background-color: #d1d8e0;
+            color: #2f3542;
+        }
+
+        body.light .todo-container {
+            background-color: #f1f2f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        body.light h1, body.light .task-counter {
+            color: #333;
+        }
+
+        body.light .task-item {
+            background-color: #e4e7eb;
+        }
+
+        body.light .task-text {
+            color: #2f3542;
+        }
+
+        /* Dark Theme Styles */
+        body.dark {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        body.dark .todo-container {
+            background-color: #2a2a2a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        body.dark h1, body.dark .task-counter, body.dark label {
+            color: #ffffff;
+        }
+
+        body.dark .task-item {
+            background-color: #3a3a3a;
+        }
+
+        body.dark .task-text {
+            color: #f1f2f6;
+        }
+
+        body.dark #taskInput, body.dark .edit-input {
+            background-color: #444;
+            color: #fff;
+            border-color: #666;
+        }
+
+        .todo-container {
+            width: 550px;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .theme-container {
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #a4b0be;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        #taskInput:focus {
+            border-color: #2ed573;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .add-btn {
+            background-color: #2ed573;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 1.05rem;
+            word-break: break-word;
+        }
+
+        .edit-input {
+            flex: 1;
+            padding: 6px 10px;
+            font-size: 1rem;
+            border: 1px solid #ffa502;
+            border-radius: 4px;
+        }
+
+        .edit-btn {
+            background-color: #ffa502;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .delete-btn {
+            background-color: #ff4757;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .task-counter {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="light">
+
+    <div class="todo-container">
+        <div class="theme-container">
+            <label for="themeSelect"><strong>Select Theme: </strong></label>
+            <select id="themeSelect" onchange="toggleTheme()">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+
+        <h1>To-Do List</h1>
+        
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <button class="add-btn" id="addTaskBtn">Add</button>
+        </div>
+
+        <ul class="task-list" id="taskList"></ul>
+
+        <div class="task-counter" id="taskCounter">Total Tasks: 0</div>
+    </div>
+
+    <script>
+        // Dynamic runtime theme toggle without storage persistence
+        function toggleTheme() {
+            const selectedTheme = document.getElementById('themeSelect').value;
+            document.body.className = selectedTheme;
+        }
+
+        // DOM Elements
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const taskCounter = document.getElementById('taskCounter');
+
+        // Function to update the total task counter
+        function updateCounter() {
+            const totalTasks = taskList.children.length;
+            taskCounter.textContent = `Total Tasks: ${totalTasks}`;
+        }
+
+        // Function to add a new task item
+        function addTask() {
+            const taskValue = taskInput.value.trim();
+            if (taskValue === '') {
+                alert('Please enter a valid task!');
+                return;
+            }
+
+            // Create list element
+            const li = document.createElement('li');
+            li.className = 'task-item';
+
+            // Create and append dynamic internal DOM structure
+            li.innerHTML = `
+                <input type="checkbox" class="task-checkbox">
+                <span class="task-text">${taskValue}</span>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            `;
+
+            taskList.appendChild(li);
+            taskInput.value = ''; // Reset input field
+            updateCounter();
+        }
+
+        // Event listener for the Add button
+        addTaskBtn.addEventListener('click', addTask);
+
+        // Allow pressing 'Enter' key to add a task
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Event Delegation for operations inside the list
+        taskList.addEventListener('click', function(e) {
+            const target = e.target;
+            const parentLI = target.parentElement;
+
+            // 1. DELETE FEATURE
+            if (target.classList.contains('delete-btn')) {
+                parentLI.remove();
+                updateCounter();
+            }
+
+            // 2. EDIT/SAVE FEATURE
+            else if (target.classList.contains('edit-btn')) {
+                const taskTextSpan = parentLI.querySelector('.task-text');
+                
+                if (target.textContent === 'Edit') {
+                    const currentText = taskTextSpan.textContent;
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.className = 'edit-input';
+                    inputField.value = currentText;
+                    
+                    parentLI.replaceChild(inputField, taskTextSpan);
+                    target.textContent = 'Save';
+                    target.style.backgroundColor = '#2ed573';
+                } else {
+                    const editInput = parentLI.querySelector('.edit-input');
+                    const updatedText = editInput.value.trim();
+                    
+                    if (updatedText === '') {
+                        alert('Task cannot be empty!');
+                        return;
+                    }
+
+                    const newSpan = document.createElement('span');
+                    newSpan.className = 'task-text';
+                    newSpan.textContent = updatedText;
+
+                    parentLI.replaceChild(newSpan, editInput);
+                    target.textContent = 'Edit';
+                    target.style.backgroundColor = '#ffa502';
+                }
+            }
+
+            // 3. TOGGLE CHECKBOX STATUS
+            else if (target.classList.contains('task-checkbox')) {
+                if (target.checked) {
+                    parentLI.classList.add('completed');
+                } else {
+                    parentLI.classList.remove('completed');
+                }
+            }
+        });
+
+        // Initial counter setup
+        updateCounter();
+    </script>
+</body>
+</html>
