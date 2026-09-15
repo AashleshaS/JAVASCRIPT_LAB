@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON to Dynamic Table</title>
+  <!-- jQuery CDN included for $.getJSON functional requirement -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    button { padding: 8px 16px; margin-right: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>Load Student JSON into Table</h2>
+  <button onclick="loadWithFetch()">Load using fetch()</button>
+  <button onclick="loadWithJQuery()">Load using $.getJSON()</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <!-- Dynamic rows load here -->
+    </tbody>
+  </table>
+
+  <script>
+    // Hardcoded JSON Array with your name and your friend's name
+    const studentData = [
+      { id: 221, name: "Ashlesha Singh", email: "aashlesha21@example.com" },
+      { id: 222, name: "Arnav Singh", email: "arnav@example.com" },
+      { id: 223, name: "Kanak Tembhurne ", email: "kanak@example.com" },
+      { id: 224, name: "Reshal Age", email: "reshalA@example.com" },
+      { id: 225, name: "Ritika Bhoyar", email: "ritika@example.com" }
+    ];
+
+    // Convert local JS array into a JSON Data URI to simulate an endpoint call
+    const jsonBlobUrl = "data:application/json;base64," + btoa(JSON.stringify(studentData));
+
+    // Helper function to build and inject rows into DOM
+    function renderRows(data) {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = ''; // Clear existing rows
+      
+      data.forEach(user => {
+        const row = `<tr>
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    // 1. Fetch implementation using locally embedded JSON
+    async function loadWithFetch() {
+      try {
+        const response = await fetch(jsonBlobUrl);
+        const data = await response.json();
+        renderRows(data);
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    }
+
+    // 2. jQuery $.getJSON implementation using locally embedded JSON
+    function loadWithJQuery() {
+      $.getJSON(jsonBlobUrl, function(data) {
+        renderRows(data);
+      }).fail(function(err) {
+        console.error('jQuery error:', err);
+      });
+    }
+  </script>
+
+</body>
+</html>
