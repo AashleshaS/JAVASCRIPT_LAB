@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Event Registration System</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .controls { margin-bottom: 15px; display: flex; gap: 10px; }
+    input, select, button { padding: 8px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .message { color: red; margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>Campus Event Registration System</h2>
+
+  <div class="controls">
+    <button id="loadBtn">Load Student Data</button>
+    <input type="text" id="searchInput" placeholder="Search by Name or PRN...">
+    <select id="statusFilter">
+      <option value="All">All Statuses</option>
+      <option value="Registered">Registered</option>
+      <option value="Pending">Pending</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <div id="message" class="message"></div>
+
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>PRN</th>
+        <th>Department</th>
+        <th>Year</th>
+        <th>Event Name</th>
+        <th>Registration Status</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>

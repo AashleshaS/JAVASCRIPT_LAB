@@ -1,0 +1,74 @@
+[
+  {
+    "studentName": "ASHLESHA SINGH",
+    "prn": "24070521221",
+    "department": "Computer Science",
+    "year": "3rd",
+    "eventName": "Hackathon 2026",
+    "registrationStatus": "Registered"
+  },
+  {
+    "studentName": "ASWIN BINU",
+    "prn": "24070521222",
+    "department": "Information Technology",
+    "year": "2nd",
+    "eventName": "AI Summit",
+    "registrationStatus": "Pending"
+  },
+  {
+    "studentName": "BHAISARE OJAS JAGDISH",
+    "prn": "24070521224",
+    "department": "Mechanical",
+    "year": "4th",
+    "eventName": "RoboWars",
+    "registrationStatus": "Cancelled"
+  },
+  {
+    "studentName": "BHOYAR RITIKA PRAKASH",
+    "prn": "24070521225",
+    "department": "Computer Science",
+    "year": "3rd",
+    "eventName": "Hackathon 2026",
+    "registrationStatus": "Registered"
+  },
+  {
+    "studentName": "BHUMIKA ARORA",
+    "prn": "24070521227",
+    "department": "Information Technology",
+    "year": "2nd",
+    "eventName": "AI Summit",
+    "registrationStatus": "Pending"
+  },
+  {
+    "studentName": "BUTLE SHARWARI ABHAY",
+    "prn": "24070521228",
+    "department": "Mechanical",
+    "year": "4th",
+    "eventName": "RoboWars",
+    "registrationStatus": "Cancelled"
+  },
+  {
+    "studentName": "DAWARE PARTH CHANDRASHEKAR",
+    "prn": "24070521230",
+    "department": "Computer Science",
+    "year": "3rd",
+    "eventName": "Hackathon 2026",
+    "registrationStatus": "Registered"
+  },
+  {
+    "studentName": "GORE ADITI VAIBHAV",
+    "prn": "24070521233",
+    "department": "Information Technology",
+    "year": "2nd",
+    "eventName": "AI Summit",
+    "registrationStatus": "Pending"
+  },
+  {
+    "studentName": "JASH CHAUHAN",
+    "prn": "24070521242",
+    "department": "Mechanical",
+    "year": "4th",
+    "eventName": "RoboWars",
+    "registrationStatus": "Cancelled"
+  }
+]
