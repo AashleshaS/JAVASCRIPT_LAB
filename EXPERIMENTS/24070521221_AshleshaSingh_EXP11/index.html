@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Scheduler & Live Timer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>Class Scheduler</h1>
+      <p id="current-time-display">Loading clock...</p>
+    </header>
+
+    <main>
+      <!-- Add Class Form -->
+      <section class="card form-card">
+        <h2>Add New Class</h2>
+        <form id="add-class-form">
+          <div class="form-group">
+            <label for="title">Subject Name</label>
+            <input type="text" id="title" placeholder="e.g., Mathematics" required>
+          </div>
+          <div class="form-group">
+            <label for="instructor">Instructor</label>
+            <input type="text" id="instructor" placeholder="e.g., Prof. Davis" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="start-time">Start Time</label>
+              <input type="time" id="start-time" required>
+            </div>
+            <div class="form-group">
+              <label for="end-time">End Time</label>
+              <input type="time" id="end-time" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Add Class</button>
+            <button type="button" id="reset-schedule-btn" class="btn-secondary">Reset to Defaults</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Active Status Banner -->
+      <section class="card banner-card">
+        <h2>Active Status</h2>
+        <div id="active-class-info">Checking schedule...</div>
+        <div id="countdown-timer" class="timer-display">--:--:--</div>
+      </section>
+
+      <!-- Schedule List -->
+      <section class="card schedule-card">
+        <h2>Today's Schedule</h2>
+        <ul id="schedule-list" class="schedule-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
